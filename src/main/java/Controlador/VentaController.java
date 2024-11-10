@@ -29,7 +29,7 @@ public class VentaController {
                 .append("montoTotal", venta.getMontoTotal());
         collection.insertOne(doc);
         
-        // Actualizar el stock del producto
+        //actualizar el stock del producto
         productoController.actualizarStock(venta.getProductoId(), venta.getCantidad());
     }
 

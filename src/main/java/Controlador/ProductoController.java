@@ -68,7 +68,6 @@ public class ProductoController {
         Producto producto = obtenerProductoPorId(productoId);
         if (producto != null) {
             int nuevoStock = producto.getCantidadEnStock() - cantidadVendida;
-            //Asegúrate de que el nuevo stock no sea negativo
             if (nuevoStock >= 0) {
                 producto.setCantidadEnStock(nuevoStock);
                 //actualizar el producto en la base de datos

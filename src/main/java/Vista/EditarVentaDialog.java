@@ -80,7 +80,7 @@ public class EditarVentaDialog extends JDialog {
 
             ventaController.actualizarVenta(ventaActualizada);
             JOptionPane.showMessageDialog(this, "Venta actualizada exitosamente.");
-            dispose(); // Cerrar el diálogo solo después de una actualización exitosa
+            dispose(); //cerrar el diálogo solo después de una actualización exitosa
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Por favor, ingresa valores válidos para cantidad y precio.");
         } catch (Exception e) {
