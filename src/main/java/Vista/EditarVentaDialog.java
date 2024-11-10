@@ -26,10 +26,11 @@ public class EditarVentaDialog extends JDialog {
         setSize(400, 250);
         setLocationRelativeTo(null);
         setModal(true);
-        setLayout(new GridLayout(4, 2));
+        
+        setLayout(new GridLayout(5, 2));
 
         add(new JLabel("Cliente:"));
-        clienteField = new JTextField(venta.getClienteId()); 
+        clienteField = new JTextField(venta.getClienteId());
         add(clienteField);
 
         add(new JLabel("Producto:"));
@@ -47,7 +48,7 @@ public class EditarVentaDialog extends JDialog {
         JButton guardarButton = new JButton("Guardar");
         guardarButton.addActionListener(e -> guardarVenta());
         add(guardarButton);
-
+        
         JButton cancelarButton = new JButton("Cancelar");
         cancelarButton.addActionListener(e -> dispose());
         add(cancelarButton);

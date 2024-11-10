@@ -64,16 +64,37 @@ public class RegistrarVentaDialog extends JDialog {
     private void registrarVenta() {
         Cliente clienteSeleccionado = (Cliente) clienteComboBox.getSelectedItem();
         Producto productoSeleccionado = (Producto) productoComboBox.getSelectedItem();
-        int cantidad = Integer.parseInt(cantidadField.getText());
+        int cantidad;
+
+        try {
+            cantidad = Integer.parseInt(cantidadField.getText());
+        } catch (NumberFormatException e) {
+            // Manejar error de formato de número si la cantidad no es un número válido
+            JOptionPane.showMessageDialog(this, "Por favor, ingresa una cantidad válida.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Salir del método si hay un error de formato
+        }
+
+        // Verificar si hay suficiente stock
+        if (productoSeleccionado.getCantidadEnStock() < cantidad) {
+            JOptionPane.showMessageDialog(this, "No hay suficiente stock para completar la venta.", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Salir si no hay suficiente stock
+        }
 
         // Calcular monto total
         double montoTotal = productoSeleccionado.getPrecioUnitario() * cantidad;
 
-        // Crear y guardar la venta
+        // Crear la venta
         Venta venta = new Venta(null, clienteSeleccionado.getId(), productoSeleccionado.getId(), cantidad, new java.util.Date(), montoTotal);
-        ventaController.registrarVenta(venta); // Método que guarda la venta en la base de datos
 
-        JOptionPane.showMessageDialog(this, "Venta registrada exitosamente.");
+        try {
+            // Intentar registrar la venta
+            ventaController.registrarVenta(venta); // Método que guarda la venta en la base de datos
+            JOptionPane.showMessageDialog(this, "Venta registrada exitosamente.");
+        } catch (IllegalArgumentException e) {
+            // Si hay un problema con el stock, mostrar un mensaje de error
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
         dispose();
     }
 }

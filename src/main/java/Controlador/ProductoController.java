@@ -63,6 +63,24 @@ public class ProductoController {
         collection.replaceOne(new Document("_id", new org.bson.types.ObjectId(producto.getId())), doc);
     }
 
+    public void actualizarStock(String productoId, int cantidadVendida) {
+        //Obtener el producto actual
+        Producto producto = obtenerProductoPorId(productoId);
+        if (producto != null) {
+            int nuevoStock = producto.getCantidadEnStock() - cantidadVendida;
+            //Asegúrate de que el nuevo stock no sea negativo
+            if (nuevoStock >= 0) {
+                producto.setCantidadEnStock(nuevoStock);
+                //actualizar el producto en la base de datos
+                Document doc = new Document("cantidadEnStock", nuevoStock);
+                collection.updateOne(new Document("_id", new org.bson.types.ObjectId(productoId)), new Document("$set", doc));
+            } else {
+                //manejar el caso donde no hay suficiente stock
+                throw new IllegalArgumentException("No hay suficiente stock para completar la venta.");
+            }
+        }
+    }
+
     public List<Producto> buscarProductosPorNombre(String nombre) {
         List<Producto> productos = new ArrayList<>();
         for (Document doc : collection.find(new Document("nombre", nombre))) {
